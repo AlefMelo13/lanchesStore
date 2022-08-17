@@ -1,6 +1,7 @@
 using LanchesStore.Context;
+using LanchesStore.Repositories;
+using LanchesStore.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace SallesWebMvc
 {
@@ -46,8 +47,9 @@ namespace SallesWebMvc
         {
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'SallesWebMvcContext' not found.");
 
-            builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+            builder.Services.AddTransient<ILancheRepository, LancheRepository>();
+            builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
 
             return builder.Services;
         }
